@@ -1,0 +1,63 @@
+from bottle import default_app, route, template , request , static_file , redirect, post
+import os
+
+
+application = default_app()
+########################### ping app ####################################
+@route('/ping')
+def ping():
+    return'''
+    <html>
+    <head>
+    <style>
+    input {
+    box-shadow: 0 0 10px #ff0000;
+        border-color: #ff0000;
+        outline: none !important;}
+    </style>
+    </head>
+    <body>
+    <h1>Ping APP </h1>
+    <form action="/ping" method="POST">
+URL: <input name="URL" placeholder="adress ip or dns or url" type="text"/>
+interval: <input name="interval" type="number" min="0" value= "3"/>
+<input value="submit" type="submit" />
+</form>
+</body>
+</html>'''
+
+@post('/ping')
+def post_ping() :
+    URL = request.forms.URL
+    interval = request.forms.interval
+    page = f'/network/{URL}/{interval}'
+    return redirect(page)
+
+
+@route('/network/<URL>/<interval:int>')
+def test (URL,interval):
+     command = f"ping -c 1 {URL}"
+     response = os.popen(command).read()
+     color = ""
+     if 'time=' in response :
+        color = "green"
+     else :
+        color = "red"
+     page = f'''
+      <html>
+      <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <title>Ping APP </title>
+      <meta http-equiv="refresh" content={interval}>
+      </head>
+      <body>
+      <h1>Ping APP</h1>
+      <p1 style="background-color:{color}"> PING {URL}</p1>
+      <pre> {response}</pre>
+      <a href=/ping class="button">return to ping</a>
+      </body>
+      </html>
+        '''
+     return page
+
+###############################################################
