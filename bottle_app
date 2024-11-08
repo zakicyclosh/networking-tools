@@ -9,6 +9,8 @@ def ping():
     return'''
     <html>
     <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+     <title>Ping APP </title>
     <style>
     input {
     box-shadow: 0 0 10px #ff0000;
@@ -19,8 +21,8 @@ def ping():
     <body>
     <h1>Ping APP </h1>
     <form action="/ping" method="POST">
-URL: <input name="URL" placeholder="adress ip or dns or url" type="text"/>
-interval: <input name="interval" type="number" min="0" value= "3"/>
+URL: <input name="URL" placeholder="adress ip or dns or url" type="text"/ required>
+interval: <input name="interval" type="number" min="1" value= "3"/>
 <input value="submit" type="submit" />
 </form>
 </body>
